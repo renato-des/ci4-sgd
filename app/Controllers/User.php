@@ -34,10 +34,23 @@ class User extends BaseController
         $userModel = new User_model();
 
         $data = [
-            'user_name' => 'darth',
-            'user_password'    => 'd.vader@theempire.com'
+            'user_name' => $this->request->getVar('user_name'),
+            'user_password'    => $this->request->getVar('user_password')
         ];
 
+
         $userModel->insert($data);
+        $lastID = $userModel->insertID();
+        $user_cpmplement = [
+            'id_users_fk' => $lastID,
+            'name_full' => $this->request->getVar('name_full'),
+            'email' => $this->request->getVar('email'),
+            'fone' => $this->request->getVar('fone')
+        ];
+
+        $userModel->addcomplements($user_cpmplement);
+
+        var_dump($user_cpmplement);
+        return $lastID;
     }
 }
